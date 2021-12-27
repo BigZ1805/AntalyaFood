@@ -30,14 +30,14 @@ public class Recipe {
             boolean Iute = scanner.nextBoolean();
             if (Iute) {
                 values.remove("KETCHUP_DULCE");
-                System.out.println("Bun, iute ca focul! In rest mai scoatem ceva? Ce scoatem?");
+                System.out.println("Bun, iute ca focul! In rest ce mai scoatem?");
                 String Scoatem = scanner.next();
                 values.remove(Scoatem);
                 System.out.println("OK, fara " + Scoatem);
             }
             else {
                 values.remove("SOS_IUTE");
-                System.out.println("OK, deci dulce! In rest mai scoatem ceva? Ce scoatem?");
+                System.out.println("OK, deci dulce! In rest ce mai scoatem?");
                 String Scoatem = scanner.next();
                 values.remove(Scoatem);
                 System.out.println("OK, fara " + Scoatem);
