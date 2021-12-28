@@ -11,9 +11,9 @@ import java.sql.SQLException;
  *
  */
 public class H2InsertExample {
-    private static final String INSERT_USERS_SQL = "INSERT INTO users" +
-            "  (id, name, email, country, password) VALUES " +
-            " (?, ?, ?, ?, ?);";
+    private static final String INSERT_STOCK_SQL = "INSERT INTO stock" +
+            "  (ingredient_id,ingredient_name, unit, qty_in_stock) VALUES " +
+            " (?,?, ?, ?);";
 
     public static void main(String[] argv) throws SQLException {
         H2InsertExample createTableExample = new H2InsertExample();
@@ -21,16 +21,15 @@ public class H2InsertExample {
     }
 
     public void insertRecord() throws SQLException {
-        System.out.println(INSERT_USERS_SQL);
+        System.out.println(INSERT_STOCK_SQL);
         // Step 1: Establishing a Connection
         try (Connection connection = H2JDBCUtils.getConnection();
              // Step 2:Create a statement using connection object
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
-            preparedStatement.setInt(1, 1);
-            preparedStatement.setString(2, "Tony");
-            preparedStatement.setString(3, "tony@gmail.com");
-            preparedStatement.setString(4, "US");
-            preparedStatement.setString(5, "secret");
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_STOCK_SQL)) {
+            preparedStatement.setInt(1, 3);
+            preparedStatement.setString(2, "CARNE_PORC");
+            preparedStatement.setString(3, "KG");
+            preparedStatement.setString(4, "300");
 
             System.out.println(preparedStatement);
             // Step 3: Execute the query or update query

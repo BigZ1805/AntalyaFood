@@ -11,10 +11,10 @@ import java.sql.Statement;
  */
 public class H2CreateExample {
 
-    private static final String createTableSQL = "drop table if exists users2;\r\n" +
-            "create table users2 (\r\n" +
-            "  name varchar(20),\r\n" + "  email varchar(20),\r\n" + "  country varchar(20),\r\n" +
-            "  password varchar(20)\r\n" + "  );";
+    private static final String createTableSQL = "drop table if exists stock;\r\n" +
+            "create table stock (\r\n" +
+            "  ingredient_id int primary key,\r\n" + "  ingredient_name varchar(20),\r\n" + "  unit varchar(20),\r\n" +
+         "  qty_in_stock double\r\n" + "  );";
 
     public static void main(String[] argv) throws SQLException {
         H2CreateExample createTableExample = new H2CreateExample();

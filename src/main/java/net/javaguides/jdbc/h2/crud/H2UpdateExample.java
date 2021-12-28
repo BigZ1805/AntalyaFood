@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 public class H2UpdateExample {
 
-    private static final String UPDATE_USERS_SQL = "update users set name = ? where id = ?;";
+    private static final String UPDATE_STOCK_SQL = "update stock set qty_in_stock = ? where ingredient_id = ?;";
 
     public static void main(String[] argv) throws SQLException {
         H2UpdateExample updateStatementExample = new H2UpdateExample();
@@ -20,13 +20,13 @@ public class H2UpdateExample {
     }
 
     public void updateRecord() throws SQLException {
-        System.out.println(UPDATE_USERS_SQL);
+        System.out.println(UPDATE_STOCK_SQL);
         // Step 1: Establishing a Connection
         try (Connection connection = H2JDBCUtils.getConnection();
              // Step 2:Create a statement using connection object
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USERS_SQL)) {
-            preparedStatement.setString(1, "Tony");
-            preparedStatement.setInt(2, 1);
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STOCK_SQL)) {
+            preparedStatement.setString(1, "200");
+            preparedStatement.setInt(2, 3);
 
             // Step 3: Execute the query or update query
             preparedStatement.executeUpdate();
