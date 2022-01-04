@@ -1,4 +1,4 @@
-package net.javaguides.jdbc.h2.crud;
+package ro.antalya.SQL;
 
 import java.sql.Connection;
 import java.sql.SQLException;

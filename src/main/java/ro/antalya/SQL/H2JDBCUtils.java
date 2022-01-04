@@ -1,12 +1,12 @@
-package net.javaguides.jdbc.h2.crud;
+package ro.antalya.SQL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class H2JDBCUtils {
-
-    private static String jdbcURL = "jdbc:h2:tcp://localhost/~/test";
+//TODO h2 init scripts
+    private static String jdbcURL = "jdbc:h2:tcp://localhost/~/test";//INIT=runscript from '~/create.sql'";//\\;runscript from '~/populate.sql'";
     private static String jdbcUsername = "sa";
     private static String jdbcPassword = "";
 

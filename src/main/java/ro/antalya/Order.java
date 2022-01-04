@@ -1,47 +1,34 @@
 package ro.antalya;
 
 
+import ro.antalya.recipe.Product;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Order {
 
-  public Order (Product product) {
-        Recipe recipe = new Recipe();
-              switch (product) {
-                  case SHAORMA_PUI_MICA:
-                    System.out.println("Ati comandat o shaorma mica de pui!");
-                      recipe.applyRecipe(Product.SHAORMA_PUI_MICA);
-                      break;
+   public Order() {
 
-                  case SHAORMA_PUI_MARE:
-                  System.out.println("Ati comandat o shaorma mare de pui, cu ce sa fie?");
-                      recipe.applyRecipe(Product.SHAORMA_PUI_MARE);
-                      break;
 
-                  case SHAORMA_VITA_MICA:
-                  System.out.println("Ati comandat o shaorma mica de vita, cu ce sa fie?");
-                      recipe.applyRecipe(Product.SHAORMA_VITA_MICA);
-                      break;
+    }
 
-                  case SHAORMA_VITA_MARE:
-                      System.out.println("Ati comandat o shaorma mare de vita, cu ce sa fie?");
-                      recipe.applyRecipe(Product.SHAORMA_VITA_MARE);
-                      break;
+//    public void createProduct(Scanner scanner) {
+//        //SHAORMA_PUI_MICA => new
+//        List<Ingredient> ingredients = new ArrayList<>();//TODO scanner -> ingredients
+//        product = new Product(ingredients);
+//        //TODO insert
+//    }
 
-                  case SHAORMA_MIX:
-                 System.out.println("Ati comandat o shaorma mix, cu ce sa fie?");
-                      recipe.applyRecipe(Product.SHAORMA_MIX);
-                      break;
+    //TODO scanner -> ingredients
+    //CARNE_PUI -> CARNE_PUI, Ingredient.valueOf
+    //CARNE_PUI123 -> throw exception, invalid ingredients
 
-                  case KEBAB_PUI:
-                      System.out.println("Ati comandat un kebab de pui, cu ce sa fie?");
-                      recipe.applyRecipe(Product.KEBAB_PUI);
-                      break;
+//    public void createKebab(Scanner scanner) {
+//        List<Ingredient> ingredients = new ArrayList<>();//scanner -> ingredients
+//
+//    }
 
-                  case KEBAB_VITA:
-                      System.out.println("Ati comandat kebab de vita, cu ce sa fie?");
-                      recipe.applyRecipe(Product.KEBAB_VITA);
-                      break;
-              }
-
-  }
 
 }
