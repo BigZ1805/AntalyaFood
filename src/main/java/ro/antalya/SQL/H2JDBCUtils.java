@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class H2JDBCUtils {
-//TODO h2 init scripts
-    private static String jdbcURL = "jdbc:h2:tcp://localhost/~/test";//INIT=runscript from '~/create.sql'";//\\;runscript from '~/populate.sql'";
+
+    private static String jdbcURL = "jdbc:h2:tcp://localhost/~/test;";//INIT=RUNSCRIPT FROM 'classpath:create.sql';";
     private static String jdbcUsername = "sa";
     private static String jdbcPassword = "";
 
