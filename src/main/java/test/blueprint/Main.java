@@ -3,6 +3,7 @@ package test.blueprint;
 
 import ro.antalya.SQL.Queries;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,7 +18,7 @@ public class Main {
      *
      * @param args SHAORMA LARGE HOT_SAUCE
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         List<String[]> consoleLines = consoleLines();
 
         List<Product> products = consoleLines.stream().map(Main::create).collect(Collectors.toList());
@@ -25,7 +26,24 @@ public class Main {
         System.out.println(order);
 
         if (!incorrectOrder) Queries.insertOrder(order);
-     }
+
+//    // UPDATE ORDER INGREDIENTS BY ORDER ID:
+//        List<Ingredient> ingredientList = new ArrayList<>();
+//          int id = 25;
+//          ingredientList.add(Ingredient.BUN);
+//          ingredientList.add(Ingredient.HOT_SAUCE);
+//          ingredientList.add(Ingredient.FRIES);
+//        Queries.updateRecord(id,ingredientList);
+
+//    // SELECT PRODUCT BY ORDER ID:
+//        Queries.selectProduct(23);
+
+//    // SELECT ALL ORDERS:
+//        Queries.getAllOrders();
+
+//    // DELETE ORDER BY ORDER ID:
+//        Queries.deleteOrder(16);
+    }
 
     private static List<String[]> consoleLines() {
         List<String[]> lines = new ArrayList<>();

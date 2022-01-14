@@ -28,6 +28,7 @@ public class H2SelectExample {
             // Step 3: Execute the query or update query
             ResultSet rs = preparedStatement.executeQuery();
 
+            
             // Step 4: Process the ResultSet object.
             while (rs.next()) {
                 int id = rs.getInt("id");
