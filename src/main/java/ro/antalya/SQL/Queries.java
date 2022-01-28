@@ -85,6 +85,9 @@ public class Queries {
                  PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDERS_SQL)) {
 
                 preparedStatement.setString(1, product.getProductType().toString());
+                //TODO 3 No need for this try/catch. Always when you go to the DB, you have already validated the
+                //data you're about to insert/update. And you already do that during the create, which is the correct
+                //way to do it. Same applies for all other try/catch put with this intent
                 try {
                     preparedStatement.setString(2, product.getProductSize().toString());
                 } catch (NullPointerException nullPointerException) {
