@@ -85,18 +85,16 @@ public class Queries {
                  PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDERS_SQL)) {
 
                 preparedStatement.setString(1, product.getProductType().toString());
-                //TODO 3 No need for this try/catch. Always when you go to the DB, you have already validated the
-                //data you're about to insert/update. And you already do that during the create, which is the correct
-                //way to do it. Same applies for all other try/catch put with this intent
-                try {
+
+                if (product.getProductSize() != null) {
                     preparedStatement.setString(2, product.getProductSize().toString());
-                } catch (NullPointerException nullPointerException) {
+                } else {
                     preparedStatement.setString(2, null);
                 }
                 preparedStatement.setTimestamp(3, timestamp);
-                try {
+                if (product.getIngredients() != null) {
                     preparedStatement.setString(4, product.getIngredients().toString());
-                } catch (NullPointerException nullPointerException) {
+                } else {
                     preparedStatement.setString(4, null);
                 }
                 System.out.println(preparedStatement);
@@ -108,7 +106,7 @@ public class Queries {
     }
 
 
-    public static void updateRecord(int id, List<Ingredient> ingredients) throws SQLException {
+    public static void updateRecord(int id, List<Ingredient> ingredients) {
         System.out.println(UPDATE_ORDERS_SQL);
         // Step 1: Establishing a Connection
         try (Connection connection = H2JDBCUtils.getConnection();

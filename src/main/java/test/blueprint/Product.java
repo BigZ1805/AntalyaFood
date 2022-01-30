@@ -2,8 +2,8 @@ package test.blueprint;
 
 import java.util.List;
 
-
 public class Product {
+
     private final ProductType productType;
     private ProductSize productSize;
     private List<Ingredient> ingredients;
