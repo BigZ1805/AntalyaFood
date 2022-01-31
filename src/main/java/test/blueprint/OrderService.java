@@ -1,14 +1,14 @@
 package test.blueprint;
 
-
+import org.springframework.stereotype.Service;
 import ro.antalya.SQL.Queries;
 
-import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Main {
+@Service
+public class OrderService {
 
     /**
      * For single order use SHAORMA LARGE HOT_SAUCE
@@ -17,19 +17,24 @@ public class Main {
      *
      * @param args SHAORMA LARGE HOT_SAUCE
      */
-    public static void main(String[] args) {
+
+
+    public static Order orderProcess() {
+
         List<String[]> consoleLines = consoleLines();
 
-        List<Product> products = consoleLines.stream().map(Main::create).collect(Collectors.toList());
+        List<Product> products = consoleLines.stream().map(OrderService::create).collect(Collectors.toList());
 
         if (!products.contains(null) && !products.isEmpty()) {
             Order order = new Order(products);
-            System.out.println(order);
             Queries.insertOrder(order);
-        } else
+            return order;
+
+        } else {
             System.out.println("Order is incorrect!");
-
-
+            return null;
+        }
+    }
 //    // UPDATE ORDER INGREDIENTS BY ORDER ID:
 //        List<Ingredient> ingredientList = new ArrayList<>();
 //          int id = 25;
@@ -46,7 +51,7 @@ public class Main {
 
 //    // DELETE ORDER BY ORDER ID:
 //        Queries.deleteOrder(16);
-    }
+
 
     private static List<String[]> consoleLines() {
         List<String[]> lines = new ArrayList<>();
@@ -83,6 +88,7 @@ public class Main {
         }
     }
 }
+
 /**
  * TODO This is the next level upgrade, but first fix the 3 TODOs above and after you can move on to this one
  * <p>

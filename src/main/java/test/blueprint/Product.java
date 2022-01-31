@@ -4,9 +4,12 @@ import java.util.List;
 
 public class Product {
 
-    private final ProductType productType;
+    private ProductType productType;
     private ProductSize productSize;
     private List<Ingredient> ingredients;
+
+    public Product() {
+    }
 
     public Product(ProductType productType, ProductSize productSize, List<Ingredient> ingredients) {
         this.productType = productType;
