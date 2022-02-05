@@ -1,14 +1,28 @@
 package test.blueprint;
 
+import test.blueprint.entity.Ingredient;
+
+import javax.persistence.*;
 import java.util.List;
 
-public class Product {
+//@Entity
 
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(columnDefinition = "TEXT")
     private ProductType productType;
+
+    @Column(columnDefinition = "TEXT")
     private ProductSize productSize;
+
+    @OneToMany
     private List<Ingredient> ingredients;
 
-    public Product() {
+    protected Product() {
     }
 
     public Product(ProductType productType, ProductSize productSize, List<Ingredient> ingredients) {
@@ -26,6 +40,14 @@ public class Product {
         this.productSize = productSize;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public ProductType getProductType() {
         return productType;
     }
@@ -41,7 +63,8 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "productType=" + productType +
+                "id=" + id +
+                ", productType=" + productType +
                 ", productSize=" + productSize +
                 ", ingredients=" + ingredients +
                 '}';

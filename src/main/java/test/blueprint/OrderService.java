@@ -1,13 +1,13 @@
 package test.blueprint;
 
-import org.springframework.stereotype.Service;
-import ro.antalya.SQL.Queries;
+import org.springframework.beans.factory.annotation.Autowired;
+import test.blueprint.entity.Ingredient;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Service
+//@Service
 public class OrderService {
 
     /**
@@ -18,75 +18,63 @@ public class OrderService {
      * @param args SHAORMA LARGE HOT_SAUCE
      */
 
+//    public final OrderRepository orderRepository;
 
-    public static Order orderProcess() {
+//    @Autowired
+//    public OrderService(OrderRepository orderRepository) {
+//        this.orderRepository = orderRepository;
+//    }
 
-        List<String[]> consoleLines = consoleLines();
+//    public static void main(String[] args) {
+//
+//        List<String[]> consoleLines = consoleLines();
+//
+//        List<Product> products = consoleLines.stream().map(OrderService::create).collect(Collectors.toList());
+//
+//        if (!products.contains(null) && !products.isEmpty()) {
+//            Order order = new Order(products);
+////          orderRepository.save(order);
+//            System.out.println(order);
+//        } else {
+//            System.out.println("Order is incorrect!");
+//
+//        }
+//    }
 
-        List<Product> products = consoleLines.stream().map(OrderService::create).collect(Collectors.toList());
+//    private static List<String[]> consoleLines() {
+//        List<String[]> lines = new ArrayList<>();
+//        Scanner input = new Scanner(System.in);
+//        String finished;
+//
+//        do {
+//            finished = input.nextLine();
+//            if (!Objects.equals(finished, "y")) {
+//                lines.add(finished.split("\\s"));
+//            }
+//        } while (!finished.equalsIgnoreCase("y"));
+//        return lines;
+//    }
 
-        if (!products.contains(null) && !products.isEmpty()) {
-            Order order = new Order(products);
-            Queries.insertOrder(order);
-            return order;
-
-        } else {
-            System.out.println("Order is incorrect!");
-            return null;
-        }
-    }
-//    // UPDATE ORDER INGREDIENTS BY ORDER ID:
-//        List<Ingredient> ingredientList = new ArrayList<>();
-//          int id = 25;
-//          ingredientList.add(Ingredient.BUN);
-//          ingredientList.add(Ingredient.HOT_SAUCE);
-//          ingredientList.add(Ingredient.FRIES);
-//        Queries.updateRecord(id,ingredientList);
-
-//    // SELECT PRODUCT BY ORDER ID:
-//        Queries.selectProduct(23);
-
-//    // SELECT ALL ORDERS:
-//        Queries.getAllOrders();
-
-//    // DELETE ORDER BY ORDER ID:
-//        Queries.deleteOrder(16);
-
-
-    private static List<String[]> consoleLines() {
-        List<String[]> lines = new ArrayList<>();
-        Scanner input = new Scanner(System.in);
-        String finished;
-
-        do {
-            finished = input.nextLine();
-            if (!Objects.equals(finished, "y")) {
-                lines.add(finished.split("\\s"));
-            }
-        } while (!finished.equalsIgnoreCase("y"));
-        return lines;
-    }
-
-    public static Product create(String[] args) {
-        try {
-            ProductType productType = ProductType.valueOf(args[0]);
-            if (args.length == 1) return new Product(productType);
-            ProductSize productSize = ProductSize.valueOf(args[1]);
-            if (args.length == 2) return new Product(productType, productSize);
-
-            String[] restOfIngredients = Arrays.stream(args, 2, args.length).toArray(String[]::new);
-            List<Ingredient> ingredients = Stream.of(restOfIngredients).map(Ingredient::valueOf).collect(Collectors.toList());
-            return new Product(productType, productSize, ingredients);
-
-        } catch (IllegalArgumentException illegalArgumentException) {
-            System.out.println("No such Product! Order is not correct!");
-            return null;
-
-        } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-            System.out.println("No such Product or Order is empty! Order is not correct!");
-            return null;
-        }
-    }
+//    public static Product create(String[] args) {
+//        try {
+//            ProductType productType = ProductType.valueOf(args[0]);
+//            if (args.length == 1) return new Product(productType);
+//            ProductSize productSize = ProductSize.valueOf(args[1]);
+//            if (args.length == 2) return new Product(productType, productSize);
+//
+//            String[] restOfIngredients = Arrays.stream(args, 2, args.length).toArray(String[]::new);
+//            List<Ingredient> ingredients = Stream.of(restOfIngredients).map(Ingredient::valueOf).collect(Collectors.toList());
+//            return new Product(productType, productSize, ingredients);
+//
+//        } catch (IllegalArgumentException illegalArgumentException) {
+//            System.out.println("No such Product! Order is not correct!");
+//            return null;
+//
+//        } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+//            System.out.println("No such Product or Order is empty! Order is not correct!");
+//            return null;
+//        }
+//    }
 }
 
 /**
