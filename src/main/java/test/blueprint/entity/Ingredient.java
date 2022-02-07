@@ -1,16 +1,27 @@
 package test.blueprint.entity;
 
 import javax.persistence.*;
+import java.util.function.Function;
 
 
 @Entity
 public class Ingredient {
-
-    //TODO
     @Id
     @GeneratedValue
     private Long id;
+
     public String label;
+
+    @ManyToOne
+    private Product product;
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     public Ingredient() {
     }

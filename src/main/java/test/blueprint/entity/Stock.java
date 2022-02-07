@@ -1,23 +1,18 @@
-package test.blueprint;
-
-import test.blueprint.entity.Ingredient;
+package test.blueprint.entity;
 
 import javax.persistence.*;
 import java.util.List;
 
-
-
-//@Entity
+@Entity
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     private Double quantity_used_in_recipe;
     private Double quantity_in_stock;
 
-    @OneToMany
+    @ManyToMany
     private List<Ingredient> ingredient;
 
     public Stock() {

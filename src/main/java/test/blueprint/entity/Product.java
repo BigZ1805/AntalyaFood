@@ -1,23 +1,23 @@
-package test.blueprint;
+package test.blueprint.entity;
 
-import test.blueprint.entity.Ingredient;
+import test.blueprint.domain.ProductSize;
+import test.blueprint.domain.ProductType;
 
 import javax.persistence.*;
 import java.util.List;
 
-//@Entity
-
+@Entity
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private ProductType productType;
 
-    @Column(columnDefinition = "TEXT")
+    private ProductType productType;
     private ProductSize productSize;
+
+    @ManyToOne
+    private Order order;
 
     @OneToMany
     private List<Ingredient> ingredients;

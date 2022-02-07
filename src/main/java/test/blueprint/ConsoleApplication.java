@@ -8,11 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.blueprint.entity.Ingredient;
 import test.blueprint.service.IngredientService;
+import test.blueprint.service.OrderService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 
 @SpringBootApplication
@@ -20,6 +18,9 @@ public class ConsoleApplication implements CommandLineRunner {
 
     @Autowired
     private IngredientService ingredientService;
+
+    @Autowired
+    private OrderService orderService;
 
     private static Logger LOG = LoggerFactory
             .getLogger(ConsoleApplication.class);
@@ -33,14 +34,16 @@ public class ConsoleApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        List<String[]> consoleLines = consoleLines();
-
         LOG.info("{}", ingredientService.findAll());
 
-        Ingredient ingredient = ingredientService.create(new Ingredient("123"));
+
+//        Ingredient newIngredient = ingredientService.create(new Ingredient("BIG_BUN"));
 //
-        LOG.info("{}", ingredient);
+//        LOG.info("{}",newIngredient);
+        ingredientService.populateIngredientList();
 
-
+        orderService.orderProcess();
+        LOG.info(orderService.orderProcess().toString());
         //order service ???
     }
 
