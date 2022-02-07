@@ -6,9 +6,8 @@ import javax.persistence.*;
 @Entity
 public class Ingredient {
 
-    //TODO
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     public String label;
 
