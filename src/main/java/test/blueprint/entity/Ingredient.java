@@ -1,27 +1,15 @@
 package test.blueprint.entity;
 
 import javax.persistence.*;
-import java.util.function.Function;
 
 
 @Entity
 public class Ingredient {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     public String label;
-
-    @ManyToOne
-    private Product product;
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 
     public Ingredient() {
     }
