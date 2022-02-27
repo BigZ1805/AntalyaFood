@@ -1,6 +1,7 @@
 package test.blueprint.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,18 +10,19 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date date;
+    private Date date = new Date(System.currentTimeMillis());
 
-    @OneToMany
-    List<Product> products;
+    @OneToMany (targetEntity = Product.class, fetch = FetchType.EAGER,cascade = CascadeType.ALL ,orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
 
     public Order() {
     }
 
     public Order(List<Product> products) {
+        this.products = products;
     }
 
     public Long getId() {
@@ -31,14 +33,6 @@ public class Order {
         this.id = id;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -47,11 +41,20 @@ public class Order {
         this.date = date;
     }
 
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
                 ", date=" + date +
+                ", product=" + products +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package test.blueprint.entity;
 
+import com.sun.istack.NotNull;
 import test.blueprint.domain.ProductSize;
 import test.blueprint.domain.ProductType;
 
@@ -12,24 +13,17 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @OneToOne(targetEntity = ProductType.class, cascade = CascadeType.ALL)
+    @NotNull
     private ProductType productType;
+
+    @OneToOne(targetEntity = ProductSize.class, cascade = CascadeType.ALL)
     private ProductSize productSize;
 
-    @ManyToOne
-    private Order order;
-
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
-    protected Product() {
-    }
-
-    public Product(ProductType productType, ProductSize productSize, List<Ingredient> ingredients) {
-        this.productType = productType;
-        this.productSize = productSize;
-        this.ingredients = ingredients;
-    }
+    public Product() {    }
 
     public Product(ProductType productType) {
         this.productType = productType;
@@ -38,6 +32,20 @@ public class Product {
     public Product(ProductType productType, ProductSize productSize) {
         this.productType = productType;
         this.productSize = productSize;
+    }
+
+    public Product(ProductType productType, ProductSize productSize, List<Ingredient> ingredients) {
+        this.productType = productType;
+        this.productSize = productSize;
+        this.ingredients = ingredients;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public Long getId() {
@@ -52,12 +60,16 @@ public class Product {
         return productType;
     }
 
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
+
     public ProductSize getProductSize() {
         return productSize;
     }
 
-    public List<Ingredient> getIngredients() {
-        return ingredients;
+    public void setProductSize(ProductSize productSize) {
+        this.productSize = productSize;
     }
 
     @Override

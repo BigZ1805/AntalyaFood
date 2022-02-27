@@ -2,18 +2,19 @@ package test.blueprint.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import test.blueprint.domain.ProductSize;
-import test.blueprint.domain.ProductType;
+import test.blueprint.domaindtos.ProductDTO;
 import test.blueprint.entity.Ingredient;
 import test.blueprint.entity.Order;
 import test.blueprint.entity.Product;
 import test.blueprint.repository.OrderRepository;
+import test.blueprint.repository.ProductRepository;
+import test.blueprint.validator.ProductValidator;
 
+import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
+@Transactional
 public class OrderService {
 
     /**
@@ -23,76 +24,68 @@ public class OrderService {
      *
      * @param args SHAORMA LARGE HOT_SAUCE
      */
-
     @Autowired
-    private OrderRepository repository;
+    private OrderRepository orderRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private IngredientService ingredientService;
+    @Autowired
+    private ProductValidator productValidator;
+    @Autowired
+    private ProductTypeService productTypeService;
+    @Autowired
+    private ProductSizeService productSizeService;
 
-    public Order orderProcess() {
-
-        List<String[]> consoleLines = consoleLines();
-
-        List<Product> products = consoleLines.stream().map(OrderService::create).collect(Collectors.toList());
-
-        if (!products.contains(null) && !products.isEmpty()) {
-            Order order = new Order(products);
-          repository.save(order);
+    public Order process(List<ProductDTO> products) {
+        List<Product> productsToProcess = new ArrayList<>() {};
+        for(ProductDTO product : products) {
+            productValidator.validate(product);
+            productsToProcess.add(convertProductArguments(product));
+        }
+            Order order = new Order(productsToProcess);
+            save(order);
             System.out.println(order);
             return order;
-        } else {
-            System.out.println("Order is incorrect!");
-            return null;
-        }
     }
 
-    private static List<String[]> consoleLines() {
-        List<String[]> lines = new ArrayList<>();
-        Scanner input = new Scanner(System.in);
-        String finished;
+    public Order save(Order order) {
+        return orderRepository.save(order);
+    }
 
-        do {
-            finished = input.nextLine();
-            if (!Objects.equals(finished, "y")) {
-                lines.add(finished.split("\\s"));
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
+    public List<Ingredient> getIngredientsFromOrders() {
+        List<Order> orders = findAll();
+        List<Ingredient> allIngredients = new ArrayList<>();
+        for (Order order : orders) {
+            List<Product> products = order.getProducts();
+            for (Product product: products) {
+                allIngredients.addAll(product.getIngredients());
             }
-        } while (!finished.equalsIgnoreCase("y"));
-        return lines;
-    }
-
-    public static Product create(String[] args) {
-        try {
-            ProductType productType = ProductType.valueOf(args[0]);
-            if (args.length == 1) return new Product(productType);
-            ProductSize productSize = ProductSize.valueOf(args[1]);
-            if (args.length == 2) return new Product(productType, productSize);
-
-            String[] restOfIngredients = Arrays.stream(args, 2, args.length).toArray(String[]::new);
-            List<Ingredient> ingredients = Stream.of(restOfIngredients).map(Ingredient::new).collect(Collectors.toList());
-            return new Product(productType, productSize, ingredients);
-
-        } catch (IllegalArgumentException illegalArgumentException) {
-            System.out.println("No such Product! Order is not correct!");
-            return null;
-
-        } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-            System.out.println("No such Product or Order is empty! Order is not correct!");
-            return null;
         }
+        return allIngredients;
     }
 
-    public Order create(Order order) {
-        return repository.save(order);
+    private Product convertProductArguments(ProductDTO productDTO) {
+        if(productDTO.getProductSize() != null) {
+            if (productDTO.getIngredients() != null)
+        return new Product(productTypeService.findByLabel(productDTO.getProductType()),
+        productSizeService.findByLabel(productDTO.getProductSize()),
+        ingredientsConvertor(productDTO.getIngredients()));
+            else return new Product(productTypeService.findByLabel(productDTO.getProductType()),
+                    productSizeService.findByLabel(productDTO.getProductSize()));}
+        else return new Product(productTypeService.findByLabel(productDTO.getProductType()));
+
+    }
+
+    private List<Ingredient> ingredientsConvertor (List<String> productDTOIngredients) {
+        List<Ingredient> convertedIngredients = new ArrayList<>();
+        for(String ingredient : productDTOIngredients) {
+            convertedIngredients.add(ingredientService.findByLabel(ingredient));
+        }
+        return convertedIngredients;
     }
 }
-
-/**
- * TODO This is the next level upgrade, but first fix the 3 TODOs above and after you can move on to this one
- * <p>
- * 1. Add spring-boot & spring-data dependency to the project. I don't want to write manual queries, i want to do them
- * spring-data style (or ORM - Object Relational Mapping). You need to familiarize with Spring Boot, Spring Data, Hibernate
- * JPA (Java persistence api)
- * <p>
- * 2. Add a Stock functionality when you Order. After an Order is processed i should be able to see how much Ingredients
- * i have consumed. Example: an order like SHAORMA LARGE HOT_SAUCE should need 1 LARGE WRAP, 1 HOT_SAUCE.
- * The Stock should have quantities of each ingredient (size included, LARGE WRAP, SMALL WRAP are 2 different ingredients)
- * The Stock should decrease in quantity after each order.
- */

@@ -1,5 +1,44 @@
 package test.blueprint.domain;
 
-public enum ProductSize {
-    SMALL,LARGE
+import javax.persistence.*;
+
+@Entity
+public class ProductSize {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String label;
+
+    public ProductSize() {
+    }
+
+    public ProductSize(String label) {
+        this.label = label;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductSize{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                '}';
+    }
 }
