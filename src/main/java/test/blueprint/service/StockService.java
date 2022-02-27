@@ -34,7 +34,7 @@ public class StockService {
             List<Ingredient> lastOrderIngredients = product.getIngredients();
             for(Ingredient ingredient: lastOrderIngredients) {
                 Stock lastOrderStock = stockRepository.getById(ingredient.getId());
-                lastOrderStock.setQuantity(lastOrderStock.getQuantity()- ingredient.getUsedQantity());
+                lastOrderStock.setQuantity(lastOrderStock.getQuantity()- ingredient.getUsedQuantity());
                 save(lastOrderStock);
             }
         }

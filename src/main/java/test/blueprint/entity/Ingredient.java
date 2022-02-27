@@ -1,7 +1,5 @@
 package test.blueprint.entity;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 
 @Entity
@@ -12,7 +10,7 @@ public class Ingredient {
     @Column(name = "id")
     private Long id;
     private String label;
-    private Double usedQantity;
+    private Double usedQuantity;
     private String unit;
 
     public Ingredient() {    }
@@ -23,7 +21,7 @@ public class Ingredient {
 
     public Ingredient(String label, Double usedQantity, String unit) {
         this.label = label;
-        this.usedQantity = usedQantity;
+        this.usedQuantity = usedQantity;
         this.unit = unit;
     }
 
@@ -43,12 +41,12 @@ public class Ingredient {
         this.label = label;
     }
 
-    public Double getUsedQantity() {
-        return usedQantity;
+    public Double getUsedQuantity() {
+        return usedQuantity;
     }
 
-    public void setUsedQantity(Double usedQantity) {
-        this.usedQantity = usedQantity;
+    public void setUsedQuantity(Double usedQuantity) {
+        this.usedQuantity = usedQuantity;
     }
 
     public String getUnit() {
@@ -64,7 +62,7 @@ public class Ingredient {
         return "Ingredient{" +
                 "id=" + id +
                 ", label='" + label + '\'' +
-                ", usedQantity=" + usedQantity +
+                ", usedQantity=" + usedQuantity +
                 ", unit='" + unit + '\'' +
                 '}';
     }

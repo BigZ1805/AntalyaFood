@@ -45,22 +45,22 @@ public class IngredientService {
         }
 
         Ingredient updateIngredient = findById(5L).get();
-        updateIngredient.setUsedQantity(0.1d);
+        updateIngredient.setUsedQuantity(0.1d);
         updateIngredient.setUnit("KG");
         save(updateIngredient);
 
         Ingredient updateIngredient2 = findById(6L).get();
-        updateIngredient2.setUsedQantity(0.1d);
+        updateIngredient2.setUsedQuantity(0.1d);
         updateIngredient2.setUnit("KG");
         save(updateIngredient2);
 
         Ingredient updateIngredient3 = findById(7L).get();
-        updateIngredient3.setUsedQantity(0.025d);
+        updateIngredient3.setUsedQuantity(0.025d);
         updateIngredient3.setUnit("Liter");
         save(updateIngredient3);
 
         Ingredient updateIngredient4 = findById(8L).get();
-        updateIngredient4.setUsedQantity(0.025d);
+        updateIngredient4.setUsedQuantity(0.025d);
         updateIngredient4.setUnit("Liter");
         save(updateIngredient4);
     }
