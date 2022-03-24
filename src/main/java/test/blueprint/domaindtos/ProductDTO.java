@@ -1,4 +1,5 @@
 package test.blueprint.domaindtos;
+//TODO 7 package name makes no sense, it's either dto, or domain.dto
 
 import java.util.List;
 

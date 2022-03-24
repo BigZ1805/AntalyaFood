@@ -11,7 +11,7 @@ import test.blueprint.repository.ProductTypeRepository;
 import java.util.List;
 
 @Service
-//TODO last: totally inefficient why ? how to ?
+//TODO 2. totally inefficient why ? how to ?
 public class ProductValidator {
 
     @Autowired
@@ -39,7 +39,7 @@ public class ProductValidator {
                     }
             }
         if (!productTypeExists) {
-//            //TODO use custom exceptions
+//            //TODO 1. use custom exceptions
             throw new RuntimeException("ProductType " + product.getProductType() +" does not exists");
 
         }
@@ -55,7 +55,7 @@ public class ProductValidator {
             }
         }
         if (!productSizeExists) {
-            //TODO use custom exceptions
+            //TODO 1. use custom exceptions
             throw new RuntimeException("ProductSize " + product.getProductSize() + " does not exists");
         }
     }

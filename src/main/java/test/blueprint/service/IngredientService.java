@@ -37,7 +37,9 @@ public class IngredientService {
         return ingredientRepository.findByLabel(label);
     }
 
+    //TODO not sure what's the purpose of this, we need to talk about it face-2-face
     public void populateIngredientStock() {
+        //TODO 3 redundancy in line 42, please simplify
         ArrayList<String> defaultIngredientList = new ArrayList<>(Arrays.asList("BIG_BUN", "SMALL_BUN", "BIG_WRAP","SMALL_WRAP","FRIES", "CABBAGE", "HOT_SAUCE", "SWEET_SAUCE"));
         for(String label: defaultIngredientList) {
             Ingredient newIngredient = save(new Ingredient(label, 1d , "PCS"));

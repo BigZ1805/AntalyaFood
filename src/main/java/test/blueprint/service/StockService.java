@@ -33,6 +33,7 @@ public class StockService {
         for(Product product: lastOrderProducts) {
             List<Ingredient> lastOrderIngredients = product.getIngredients();
             for(Ingredient ingredient: lastOrderIngredients) {
+                //TODO 12 this is a bug, it makes the assumption that stock & ingredient id are the same
                 Stock lastOrderStock = stockRepository.getById(ingredient.getId());
                 lastOrderStock.setQuantity(lastOrderStock.getQuantity()- ingredient.getUsedQuantity());
                 save(lastOrderStock);

@@ -12,6 +12,7 @@ import test.blueprint.validator.ProductValidator;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,15 +39,19 @@ public class OrderService {
     private ProductSizeService productSizeService;
 
     public Order process(List<ProductDTO> products) {
-        List<Product> productsToProcess = new ArrayList<>() {};
-        for(ProductDTO product : products) {
+        //TODO 6 lines 42 -> 46 should be splitted in 2 separate operations: one validates the DTO,
+        // the other one, by using stream map wil convert from dto to entity
+        List<Product> productsToProcess = new ArrayList<>();
+        for (ProductDTO product : products) {
             productValidator.validate(product);
             productsToProcess.add(convertProductArguments(product));
         }
-            Order order = new Order(productsToProcess);
-            save(order);
-            System.out.println(order);
-            return order;
+        //TODO 9 write lines 49 -> 53 as a one liner (logging can be moved to save method for example, or completely removed)
+        Order order = new Order(productsToProcess);
+        save(order);
+        //TODO 8 no more system out, introduce logging maven dependency and replace all system.out with logger
+        System.out.println(order);
+        return order;
     }
 
     public Order save(Order order) {
@@ -58,32 +63,35 @@ public class OrderService {
     }
 
     public List<Ingredient> getIngredientsFromOrders() {
+        //TODO 10 instead of 2 foreach, try stream flatmap. It's a difficult todo, you need to understand streams
         List<Order> orders = findAll();
         List<Ingredient> allIngredients = new ArrayList<>();
         for (Order order : orders) {
             List<Product> products = order.getProducts();
-            for (Product product: products) {
+            for (Product product : products) {
                 allIngredients.addAll(product.getIngredients());
             }
         }
         return allIngredients;
     }
 
+    //TODO 11 insanely inefficient
     private Product convertProductArguments(ProductDTO productDTO) {
-        if(productDTO.getProductSize() != null) {
+        if (productDTO.getProductSize() != null) {
             if (productDTO.getIngredients() != null)
-        return new Product(productTypeService.findByLabel(productDTO.getProductType()),
-        productSizeService.findByLabel(productDTO.getProductSize()),
-        ingredientsConvertor(productDTO.getIngredients()));
+                return new Product(productTypeService.findByLabel(productDTO.getProductType()),
+                        productSizeService.findByLabel(productDTO.getProductSize()),
+                        ingredientsConvertor(productDTO.getIngredients()));
             else return new Product(productTypeService.findByLabel(productDTO.getProductType()),
-                    productSizeService.findByLabel(productDTO.getProductSize()));}
-        else return new Product(productTypeService.findByLabel(productDTO.getProductType()));
+                    productSizeService.findByLabel(productDTO.getProductSize()));
+        } else return new Product(productTypeService.findByLabel(productDTO.getProductType()));
 
     }
 
-    private List<Ingredient> ingredientsConvertor (List<String> productDTOIngredients) {
+    //TODO 11 insanely inefficient
+    private List<Ingredient> ingredientsConvertor(List<String> productDTOIngredients) {
         List<Ingredient> convertedIngredients = new ArrayList<>();
-        for(String ingredient : productDTOIngredients) {
+        for (String ingredient : productDTOIngredients) {
             convertedIngredients.add(ingredientService.findByLabel(ingredient));
         }
         return convertedIngredients;
