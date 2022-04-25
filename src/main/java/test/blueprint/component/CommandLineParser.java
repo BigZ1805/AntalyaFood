@@ -1,11 +1,7 @@
 package test.blueprint.component;
 
 import org.springframework.stereotype.Component;
-import test.blueprint.domain.ProductSize;
-import test.blueprint.domain.ProductType;
-import test.blueprint.domaindtos.ProductDTO;
-import test.blueprint.entity.Ingredient;
-import test.blueprint.entity.Product;
+import test.blueprint.dto.ProductDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;

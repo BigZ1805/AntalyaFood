@@ -1,5 +1,7 @@
 package test.blueprint.domain;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +11,7 @@ public class ProductSize {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Nullable
     private String label;
 
     public ProductSize() {

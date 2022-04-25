@@ -3,12 +3,9 @@ package test.blueprint.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import test.blueprint.entity.Ingredient;
-import test.blueprint.entity.Stock;
 import test.blueprint.repository.IngredientRepository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,34 +34,5 @@ public class IngredientService {
         return ingredientRepository.findByLabel(label);
     }
 
-    //TODO not sure what's the purpose of this, we need to talk about it face-2-face
-    public void populateIngredientStock() {
-        //TODO 3 redundancy in line 42, please simplify
-        ArrayList<String> defaultIngredientList = new ArrayList<>(Arrays.asList("BIG_BUN", "SMALL_BUN", "BIG_WRAP","SMALL_WRAP","FRIES", "CABBAGE", "HOT_SAUCE", "SWEET_SAUCE"));
-        for(String label: defaultIngredientList) {
-            Ingredient newIngredient = save(new Ingredient(label, 1d , "PCS"));
-            Stock newStock = stockService.save(new Stock(100d, newIngredient));
-        }
-
-        Ingredient updateIngredient = findById(5L).get();
-        updateIngredient.setUsedQuantity(0.1d);
-        updateIngredient.setUnit("KG");
-        save(updateIngredient);
-
-        Ingredient updateIngredient2 = findById(6L).get();
-        updateIngredient2.setUsedQuantity(0.1d);
-        updateIngredient2.setUnit("KG");
-        save(updateIngredient2);
-
-        Ingredient updateIngredient3 = findById(7L).get();
-        updateIngredient3.setUsedQuantity(0.025d);
-        updateIngredient3.setUnit("Liter");
-        save(updateIngredient3);
-
-        Ingredient updateIngredient4 = findById(8L).get();
-        updateIngredient4.setUsedQuantity(0.025d);
-        updateIngredient4.setUnit("Liter");
-        save(updateIngredient4);
-    }
 }
 

@@ -1,26 +1,26 @@
 package test.blueprint;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import test.blueprint.component.CommandLineParser;
-import test.blueprint.domaindtos.ProductDTO;
+import test.blueprint.component.LoadDatabase;
+import test.blueprint.dto.ProductDTO;
 import test.blueprint.entity.Ingredient;
 import test.blueprint.entity.Order;
-import test.blueprint.entity.Product;
-import test.blueprint.entity.Stock;
+import test.blueprint.exceptions.IncorrectProductSizeInputException;
+import test.blueprint.exceptions.IncorrectProductTypeInputException;
 import test.blueprint.service.IngredientService;
 import test.blueprint.service.OrderService;
 import test.blueprint.service.ProductService;
 import test.blueprint.service.StockService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 
 @SpringBootApplication
@@ -36,6 +36,8 @@ public class ConsoleApplication implements CommandLineRunner {
     private CommandLineParser commandLineParser;
     @Autowired
     private StockService stockService;
+    @Autowired
+    private LoadDatabase loadDatabase;
 
     private static final Logger LOG = LoggerFactory.getLogger(ConsoleApplication.class);
 
@@ -47,16 +49,21 @@ public class ConsoleApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
-        ingredientService.populateIngredientStock();
-
+        loadDatabase.initDatabase();
         List<ProductDTO> products = commandLineParser.parseCommandLines();//validate
 
-        Order order = orderService.process(products);
+        try {
+            Order order = orderService.process(products);
+        } catch (RuntimeException e) {
+            LOG.error(e.getMessage());
+        }
+
+        //exception.getMessage()
 
 //      Get ingredients from all orders
-        LOG.info("{}", ingredientService.findAll());
-        List<Ingredient> allIngredients = orderService.getIngredientsFromOrders();
+//        LOG.info("{}", ingredientService.findAll());
+//        List<Ingredient> allIngredients = orderService.getIngredientsFromOrders();
+//        LOG.info("{}", allIngredients);
 
 //      Refresh last order stock
         stockService.refreshStock();

@@ -69,5 +69,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.3.15" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.3.15" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.h2database:h2:1.4.200" level="project" />
+    <orderEntry type="library" name="Maven: org.modelmapper:modelmapper:2.4.5" level="project" />
   </component>
 </module>

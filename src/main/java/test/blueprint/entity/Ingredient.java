@@ -19,9 +19,9 @@ public class Ingredient {
         this.label = label;
     }
 
-    public Ingredient(String label, Double usedQantity, String unit) {
+    public Ingredient(String label, Double usedQuantity, String unit) {
         this.label = label;
-        this.usedQuantity = usedQantity;
+        this.usedQuantity = usedQuantity;
         this.unit = unit;
     }
 
@@ -62,7 +62,7 @@ public class Ingredient {
         return "Ingredient{" +
                 "id=" + id +
                 ", label='" + label + '\'' +
-                ", usedQantity=" + usedQuantity +
+                ", usedQuantity=" + usedQuantity +
                 ", unit='" + unit + '\'' +
                 '}';
     }

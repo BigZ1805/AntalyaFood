@@ -3,7 +3,6 @@ package test.blueprint.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import test.blueprint.domain.ProductType;
-import test.blueprint.entity.Ingredient;
 import test.blueprint.repository.ProductTypeRepository;
 
 import javax.transaction.Transactional;

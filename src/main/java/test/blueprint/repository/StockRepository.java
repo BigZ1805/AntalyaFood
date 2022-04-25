@@ -6,4 +6,5 @@ import test.blueprint.entity.Stock;
 
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
+    Stock findByIngredientId(Long ingredientId);
 }

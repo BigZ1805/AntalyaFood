@@ -1,9 +1,11 @@
 package test.blueprint.entity;
 
 import com.sun.istack.NotNull;
+import org.modelmapper.AbstractProvider;
+import org.modelmapper.Provider;
+import org.springframework.lang.Nullable;
 import test.blueprint.domain.ProductSize;
 import test.blueprint.domain.ProductType;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,21 +20,13 @@ public class Product {
     private ProductType productType;
 
     @OneToOne(targetEntity = ProductSize.class, cascade = CascadeType.ALL)
+    @Nullable
     private ProductSize productSize;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
     public Product() {    }
-
-    public Product(ProductType productType) {
-        this.productType = productType;
-    }
-
-    public Product(ProductType productType, ProductSize productSize) {
-        this.productType = productType;
-        this.productSize = productSize;
-    }
 
     public Product(ProductType productType, ProductSize productSize, List<Ingredient> ingredients) {
         this.productType = productType;

@@ -1,62 +1,52 @@
 package test.blueprint.validator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import test.blueprint.component.LoadDatabase;
 import test.blueprint.domain.ProductSize;
 import test.blueprint.domain.ProductType;
-import test.blueprint.domaindtos.ProductDTO;
+import test.blueprint.dto.ProductDTO;
+import test.blueprint.exceptions.IncorrectProductSizeInputException;
+import test.blueprint.exceptions.IncorrectProductTypeInputException;
 import test.blueprint.repository.ProductSizeRepository;
 import test.blueprint.repository.ProductTypeRepository;
 
 import java.util.List;
+import java.util.ServiceLoader;
 
 @Service
-//TODO 2. totally inefficient why ? how to ?
 public class ProductValidator {
 
     @Autowired
-    private ProductSizeRepository productSizeRepository;
-    @Autowired
-    private ProductTypeRepository productTypeRepository;
+    private LoadDatabase loadDatabase;
     @Autowired
     private IngredientValidator ingredientValidator;
 
-    public void validate(ProductDTO product) {//product requested by client
+    private static final Logger LOG = LoggerFactory.getLogger(ProductValidator.class);
+
+    public void validate(ProductDTO product) {
         validateProductType(product);
         if (product.getProductSize() != null) {
             validateProductSize(product);
+        }
+        if (product.getIngredients() != null) {
             ingredientValidator.validateIngredients(product);
         }
     }
 
     private void validateProductType(ProductDTO product) {
-        List<ProductType> productTypesFromDB = productTypeRepository.findAll();
-        boolean productTypeExists = false;
-            for (ProductType productTypeFromDB : productTypesFromDB) {
-                    if (productTypeFromDB.getLabel().equals(product.getProductType())) {
-                        productTypeExists = true;
-                        break;
-                    }
-            }
+        boolean productTypeExists = loadDatabase.productTypeList.stream().anyMatch(productType -> product.getProductType().equals(productType));
         if (!productTypeExists) {
-//            //TODO 1. use custom exceptions
-            throw new RuntimeException("ProductType " + product.getProductType() +" does not exists");
-
+            throw new IncorrectProductTypeInputException(product.getProductType());
         }
     }
 
     private void validateProductSize(ProductDTO product) {
-        List<ProductSize> productSizesFromDB = productSizeRepository.findAll();
-        boolean productSizeExists = false;
-        for (ProductSize productSizeFromDB : productSizesFromDB) {
-            if (productSizeFromDB.getLabel().equals(product.getProductSize())|| product.getProductSize() == null) {
-                productSizeExists = true;
-                break;
-            }
-        }
+        boolean productSizeExists = loadDatabase.productSizeList.stream().anyMatch(productSize -> product.getProductSize().equals(productSize));
         if (!productSizeExists) {
-            //TODO 1. use custom exceptions
-            throw new RuntimeException("ProductSize " + product.getProductSize() + " does not exists");
+            throw new IncorrectProductSizeInputException("This product size does not exist: " + product.getProductSize());
         }
     }
 

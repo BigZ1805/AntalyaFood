@@ -7,7 +7,6 @@ import test.blueprint.entity.Order;
 import test.blueprint.entity.Product;
 import test.blueprint.entity.Stock;
 import test.blueprint.repository.StockRepository;
-
 import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
@@ -22,8 +21,8 @@ public class StockService {
     @Autowired
     private OrderService orderService;
 
-    public Stock save(Stock stock) {
-        return stockRepository.save(stock);
+    public void save(Stock stock) {
+        stockRepository.save(stock);
     }
 
     public void refreshStock() {
@@ -33,8 +32,7 @@ public class StockService {
         for(Product product: lastOrderProducts) {
             List<Ingredient> lastOrderIngredients = product.getIngredients();
             for(Ingredient ingredient: lastOrderIngredients) {
-                //TODO 12 this is a bug, it makes the assumption that stock & ingredient id are the same
-                Stock lastOrderStock = stockRepository.getById(ingredient.getId());
+                Stock lastOrderStock = stockRepository.findByIngredientId(ingredient.getId());
                 lastOrderStock.setQuantity(lastOrderStock.getQuantity()- ingredient.getUsedQuantity());
                 save(lastOrderStock);
             }

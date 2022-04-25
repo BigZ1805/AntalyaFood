@@ -1,5 +1,4 @@
-package test.blueprint.domaindtos;
-//TODO 7 package name makes no sense, it's either dto, or domain.dto
+package test.blueprint.dto;
 
 import java.util.List;
 
@@ -47,4 +46,5 @@ public class ProductDTO {
     public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
     }
+
 }

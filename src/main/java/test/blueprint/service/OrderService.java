@@ -1,8 +1,11 @@
 package test.blueprint.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import test.blueprint.domaindtos.ProductDTO;
+import test.blueprint.domain.ProductSize;
+import test.blueprint.domain.ProductType;
+import test.blueprint.dto.ProductDTO;
 import test.blueprint.entity.Ingredient;
 import test.blueprint.entity.Order;
 import test.blueprint.entity.Product;
@@ -13,6 +16,7 @@ import test.blueprint.validator.ProductValidator;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 @Transactional
@@ -30,6 +34,7 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
+    @Lazy
     private IngredientService ingredientService;
     @Autowired
     private ProductValidator productValidator;
@@ -38,20 +43,10 @@ public class OrderService {
     @Autowired
     private ProductSizeService productSizeService;
 
-    public Order process(List<ProductDTO> products) {
-        //TODO 6 lines 42 -> 46 should be splitted in 2 separate operations: one validates the DTO,
-        // the other one, by using stream map wil convert from dto to entity
-        List<Product> productsToProcess = new ArrayList<>();
-        for (ProductDTO product : products) {
-            productValidator.validate(product);
-            productsToProcess.add(convertProductArguments(product));
-        }
-        //TODO 9 write lines 49 -> 53 as a one liner (logging can be moved to save method for example, or completely removed)
-        Order order = new Order(productsToProcess);
-        save(order);
-        //TODO 8 no more system out, introduce logging maven dependency and replace all system.out with logger
-        System.out.println(order);
-        return order;
+    public Order process(List<ProductDTO> productsDtos) {
+        productsDtos.forEach(productValidator::validate);
+        List<Product> products = productsDtos.stream().map(this::convert).collect(Collectors.toList());
+        return save(new Order(products));
     }
 
     public Order save(Order order) {
@@ -63,32 +58,19 @@ public class OrderService {
     }
 
     public List<Ingredient> getIngredientsFromOrders() {
-        //TODO 10 instead of 2 foreach, try stream flatmap. It's a difficult todo, you need to understand streams
         List<Order> orders = findAll();
-        List<Ingredient> allIngredients = new ArrayList<>();
-        for (Order order : orders) {
-            List<Product> products = order.getProducts();
-            for (Product product : products) {
-                allIngredients.addAll(product.getIngredients());
-            }
-        }
-        return allIngredients;
+        return orders.stream()
+                .flatMap(order -> order.getProducts().stream()
+                        .flatMap(product -> product.getIngredients().stream())).collect(Collectors.toList());
     }
 
-    //TODO 11 insanely inefficient
-    private Product convertProductArguments(ProductDTO productDTO) {
-        if (productDTO.getProductSize() != null) {
-            if (productDTO.getIngredients() != null)
-                return new Product(productTypeService.findByLabel(productDTO.getProductType()),
-                        productSizeService.findByLabel(productDTO.getProductSize()),
-                        ingredientsConvertor(productDTO.getIngredients()));
-            else return new Product(productTypeService.findByLabel(productDTO.getProductType()),
-                    productSizeService.findByLabel(productDTO.getProductSize()));
-        } else return new Product(productTypeService.findByLabel(productDTO.getProductType()));
-
+    private Product convert(ProductDTO productDTO) {
+        ProductType productType = productTypeService.findByLabel(productDTO.getProductType());
+        ProductSize productSize = productSizeService.findByLabel(productDTO.getProductSize());
+        List<Ingredient> ingredients = productDTO.getIngredients() != null ? ingredientsConvertor(productDTO.getIngredients()) : null;
+        return new Product(productType, productSize, ingredients);
     }
 
-    //TODO 11 insanely inefficient
     private List<Ingredient> ingredientsConvertor(List<String> productDTOIngredients) {
         List<Ingredient> convertedIngredients = new ArrayList<>();
         for (String ingredient : productDTOIngredients) {
